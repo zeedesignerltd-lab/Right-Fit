@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رائٹ فٹ پرچی</title>
+<meta name="theme-color" content="#141414">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Right Fit">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Noto+Naskh+Arabic:wght@500;600;700&family=Caveat:wght@500;600&family=Barlow+Condensed:wght@600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- data-i = app text, data-iph = app placeholder, data-ia = app aria-label; data-s = slip text, data-sph = slip placeholder. app.js fills them for the chosen language. -->
+
+<!-- ============ List ============ -->
+<section id="v-list" class="view">
+  <header class="bar">
+    <div class="bar-title">
+      <strong id="shopTitle">رائٹ فٹ</strong>
+      <span id="count" class="sub">0 پرچیاں</span>
+    </div>
+    <div class="bar-actions">
+      <button id="installBtn" class="ghost" type="button" data-i="install" hidden>انسٹال کریں</button>
+      <button id="langBtn" class="ghost" type="button">English</button>
+      <button id="settingsBtn" class="ghost" type="button" data-i="settingsBtn">ترتیبات</button>
+    </div>
+  </header>
+
+  <div class="searchbox">
+    <input id="q" type="search" data-iph="search" data-ia="search" placeholder="نام، نمبر یا موبائل سے تلاش کریں" autocomplete="off" aria-label="تلاش">
+  </div>
+
+  <ul id="list" class="items"></ul>
+
+  <button id="addBtn" class="fab" type="button" data-i="addBtn">+ نئی پرچی</button>
+</section>
+
+<!-- ============ Slip editor ============ -->
+<section id="v-edit" class="view" hidden>
+  <header class="bar">
+    <button id="backBtn" class="ghost" type="button" data-i="back">→ واپس</button>
+    <div class="bar-actions">
+      <button id="saveBtn" class="primary" type="button" data-i="save">محفوظ کریں</button>
+      <button id="shareBtn" type="button" data-i="share">شیئر کریں</button>
+    </div>
+  </header>
+
+  <main class="slip" id="slip" dir="rtl">
+    <div class="brand">
+      <div class="ur" id="o_ur"></div>
+      <div class="en"><span id="o_en"></span><small id="o_en2"></small></div>
+    </div>
+    <div class="tag" id="o_tag"></div>
+    <div class="contact" id="o_ph"></div>
+
+    <div class="meta">
+      <div class="f"><label for="no" data-s="no">نمبر</label><input id="no" dir="ltr" inputmode="numeric" placeholder="204"></div>
+      <div class="f"><label for="date" data-s="date">تاریخ</label><input id="date" dir="ltr" placeholder="11/10/2026"></div>
+      <div class="f"><label for="cname" data-s="cname">کسٹمر نام</label><input id="cname" dir="auto" data-sph="cnamePh" placeholder="نام لکھیں"></div>
+      <div class="f"><label for="cell" data-s="cell">موبائل</label><input id="cell" dir="ltr" inputmode="tel" placeholder="03XX-XXXXXXX"></div>
+    </div>
+
+    <div class="grid">
+      <div class="col" id="colCoat"></div>
+      <div class="col" id="colPant"></div>
+    </div>
+
+    <div class="line style"><label for="style" data-s="style">اسٹائل</label><input id="style" dir="auto" data-sph="stylePh" placeholder="مثال: ویسٹ کوٹ، 1 بٹن"></div>
+
+    <div class="opts">
+      <div class="stack" id="optsR"></div>
+      <div class="stack" id="optsL"></div>
+    </div>
+
+    <div class="hid">
+      <label for="hidayat" data-s="hid">ضروری ہدایات</label>
+      <textarea id="hidayat" dir="auto" rows="3" data-sph="hidPh" placeholder="یہاں ہدایات لکھیں"></textarea>
+    </div>
+
+    <div class="note" data-s="note">نوٹ: 2 ماہ کے بعد فرم کپڑوں کی ذمہ دار نہ ہوگی۔ رسید کے بغیر کپڑے نہیں ملیں گے۔</div>
+  </main>
+
+  <div class="panel" id="photoPanel">
+    <h2 data-i="photoTitle">پرچی کی تصویر</h2>
+    <p class="hint" id="photoEmpty" data-i="photoHint">ہاتھ سے لکھی ہوئی پرچی کی تصویر لگائیں۔ تصویر اسی پرچی کے ساتھ محفوظ رہے گی۔</p>
+    <div id="photoBox" hidden>
+      <button id="photoOpen" class="thumbbtn" type="button" data-ia="photoOpen" aria-label="تصویر بڑی کر کے دیکھیں"><img id="photoThumb" alt=""></button>
+    </div>
+    <div class="row-btns">
+      <button id="camBtn" type="button" data-i="cam">کیمرے سے تصویر</button>
+      <button id="galBtn" type="button" data-i="gal">گیلری سے چنیں</button>
+    </div>
+    <div class="row-btns">
+      <button id="scanBtn" class="primary" type="button" data-i="scan">تصویر سے خود بھریں</button>
+      <button id="photoDel" class="danger" type="button" data-i="photoDel" hidden>تصویر ہٹائیں</button>
+    </div>
+    <input id="fileCam" type="file" accept="image/*" capture="environment" hidden>
+    <input id="fileGal" type="file" accept="image/*" hidden>
+  </div>
+
+  <div class="editfoot">
+    <button id="delBtn" class="danger" type="button" data-i="delSlip">پرچی ڈیلیٹ کریں</button>
+  </div>
+</section>
+
+<!-- ============ Settings ============ -->
+<section id="v-settings" class="view" hidden>
+  <header class="bar">
+    <button id="setBackBtn" class="ghost" type="button" data-i="back">→ واپس</button>
+    <div class="bar-title"><strong data-i="setTitle">ترتیبات</strong></div>
+  </header>
+
+  <div class="panel">
+    <h2 data-i="langTitle">زبان</h2>
+    <div class="langrow">
+      <span data-i="langUi">ایپ کی زبان</span>
+      <div class="seg" role="group">
+        <button type="button" data-ui="ur">اردو</button>
+        <button type="button" data-ui="en">English</button>
+      </div>
+    </div>
+    <div class="langrow">
+      <span data-i="langSlip">پرچی کی زبان</span>
+      <div class="seg" role="group">
+        <button type="button" data-sl="ur">اردو</button>
+        <button type="button" data-sl="en">English</button>
+      </div>
+    </div>
+    <p class="hint" data-i="langHint">پرچی کی زبان ایڈیٹر اور شیئر کی جانے والی تصویر کی ڈیفالٹ زبان ہے۔ شیئر کرتے وقت بھی بدل سکتے ہیں۔</p>
+  </div>
+
+  <div class="panel">
+    <h2 data-i="shopTitleH">دکان کی تفصیل</h2>
+    <p class="hint" data-i="shopHint">یہ ہر پرچی کے اوپر اور شیئر کی ہوئی تصویر میں آئے گی۔</p>
+    <label><span data-i="sUr">دکان کا نام (اردو)</span><input id="s_ur" dir="rtl"></label>
+    <label><span data-i="sEn">دکان کا نام (انگریزی)</span><input id="s_en" dir="ltr"></label>
+    <label><span data-i="sEn2">دوسری لائن (انگریزی)</span><input id="s_en2" dir="ltr"></label>
+    <label><span data-i="sTag">ٹیگ لائن (اردو)</span><input id="s_tag" dir="rtl"></label>
+    <label><span data-i="sTagEn">ٹیگ لائن (انگریزی)</span><input id="s_tagEn" dir="ltr"></label>
+    <label><span data-i="sPh">نام اور فون نمبر</span><input id="s_ph" dir="ltr"></label>
+    <label><span data-i="sHid">ضروری ہدایات (ہر نئی پرچی میں پہلے سے لکھی آئیں گی)</span><textarea id="s_hid" dir="auto" rows="3"></textarea></label>
+  </div>
+
+  <div class="panel">
+    <h2 data-i="scanTitle">تصویر سے خود بھرنا</h2>
+    <p class="hint" data-i="scanHint">یہ سہولت Claude (Anthropic) کی سروس سے تصویر پڑھواتی ہے۔ اس کے لیے آپ کے پاس API کی (key) ہونی چاہیے، ہر تصویر پر تھوڑا خرچ آتا ہے اور تصویر انٹرنیٹ پر بھیجی جاتی ہے۔ کی صرف اسی فون میں رہتی ہے اور بیک اپ میں شامل نہیں ہوتی۔</p>
+    <label><span data-i="apiKey">API کی</span><input id="apiKey" type="password" dir="ltr" autocomplete="off" placeholder="sk-ant-..."></label>
+  </div>
+
+  <div class="panel">
+    <h2 data-i="bkTitle">ڈیٹا کا بیک اپ</h2>
+    <p class="hint" data-i="bkHint">سارا ڈیٹا صرف اسی فون میں محفوظ ہوتا ہے۔ فون بدلنے یا براؤزر کا ڈیٹا صاف کرنے سے پہلے بیک اپ ضرور لیں۔ تصویریں بھی بیک اپ میں شامل ہیں۔</p>
+    <div class="row-btns">
+      <button id="exportBtn" class="primary" type="button" data-i="bkExport">بیک اپ ڈاؤن لوڈ</button>
+      <button id="importBtn" type="button" data-i="bkImport">بیک اپ بحال کریں</button>
+    </div>
+    <input id="importFile" type="file" accept="application/json,.json" hidden>
+    <p id="backupInfo" class="hint"></p>
+  </div>
+</section>
+
+<!-- ============ Share preview ============ -->
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-card" role="dialog" aria-modal="true">
+    <div class="sheet-head">
+      <strong data-i="sheetTitle">پرچی کی جھلک</strong>
+      <div class="seg small" role="group">
+        <button type="button" data-img="ur">اردو</button>
+        <button type="button" data-img="en">English</button>
+      </div>
+      <button id="sheetClose" class="ghost" type="button" data-i="close">بند کریں</button>
+    </div>
+    <div class="sheet-body"><img id="sheetImg" alt=""></div>
+    <div class="sheet-foot">
+      <button id="sheetShare" class="primary" type="button" data-i="share">شیئر کریں</button>
+      <button id="sheetSave" type="button" data-i="sheetSave">تصویر محفوظ کریں</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Full photo ============ -->
+<div id="photoView" class="pv" hidden>
+  <button id="photoViewClose" class="pvclose" type="button" data-i="close">بند کریں</button>
+  <img id="photoBig" alt="">
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
